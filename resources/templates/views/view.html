@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="~{layouts/base}">
+<head>
+<title th:text="${pageInfo.title}">Test</title>
+</head>
+<body>
+<div layout:fragment="content">
+     <div class="container">
+            <div class="nav">
+                <div class="nav__categories js-dropdown">
+                    <div class="nav__select nav_categories">
+						<input type="hidden" data-dropdown-value="categories"></input>
+                        <div v-on:click="dropdown('nav_categories', $event)" class="btn-select" data-dropdown-btn="categories">All Categories</div>
+                        <nav class="dropdown dropdown--design-01" data-dropdown-list="categories">
+                            <ul class="dropdown__catalog row">
+							<li class="col-xs-6"><a v-on:click="dropdownSelect" data-value="" data-display="All Categories" href="#" class="category"><i class="bg-ef429e"></i>All Categories</a></li>
+                                <li class="col-xs-6" v-for="cat in cats" :key="cat.key">
+								<a v-on:click="dropdownSelect" :data-value="cat.value" :data-display="cat.key" :href="cat.value" class="category"><i :class="cat.color"></i>{{cat.key}}</a>
+								</li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="nav__select nav_tags">
+						<input type="hidden" data-dropdown-value="tags"></input>
+                        <div v-on:click="dropdown('nav_tags', $event)" class="btn-select" data-dropdown-btn="tags">All Tags</div>
+                        <div class="dropdown dropdown--design-01" data-dropdown-list="tags">
+                            <div class="tags">
+							<a v-on:click="dropdownSelect" href="#" data-value="" data-display="All Tags" class="bg-ef429e">All Tags</a>
+                                <a v-on:click="dropdownSelect" :data-value="tag.value" :data-display="tag.key" v-for="tag in tags" :key="tag.key" :href="tag.value" :class="tag.color">{{tag.key}}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="nav__menu js-dropdown">
+                    <div class="nav__select nav_menu-filter">
+						<input type="hidden" data-dropdown-value="menu-filter"></input>
+                        <div v-on:click="dropdown('nav_menu-filter', $event)" class="btn-select" data-dropdown-btn="menu-filter">Latest</div>
+                        <div class="dropdown dropdown--design-01" data-dropdown-list="menu-filter">
+                            <ul class="dropdown__catalog">
+                                <li v-for="mode in viewMode" :key="mode.key"><a :data-value="mode.value" :data-display="mode.key" v-on:click="dropdownSelect" href="#">{{mode.key}}</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <ul>
+						<input type="hidden"></input>
+						<li :class="mode.active" v-for="mode in viewMode" :key="mode.key">
+							<a :data-value="mode.value" :data-display="mode.key" v-on:click="modeFilter" :href="mode.value">{{mode.key}}</a>
+						</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="posts">
+                <div class="posts__head">
+                    <div class="posts__topic">Topic</div>
+                    <div class="posts__category">Category</div>
+                    <div class="posts__users">Users</div>
+                    <div class="posts__replies">Replies</div>
+                    <div class="posts__views">Views</div>
+                    <div class="posts__activity">Activity</div>
+                </div>
+                <div class="posts__body">
+                    <div v-if="notifications.show" class="posts__item" :class="itm.bColor" v-for="itm in notifications.data">
+                        <div class="posts__section-left">
+                            <div class="posts__topic">
+                                <div class="posts__content">
+                                    <a :href="itm.href">
+                                        <h3><i><img th:src="@{/resources/images/Pinned.svg}" alt='Pinned'></i>{{itm.title}}</h3>
+                                    </a>
+                                    <p>{{itm.content}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="posts__section-right">
+                            <div class="posts__users js-dropdown">
+                                <div v-for="user in itm.userActivity">
+                                    <a :data-href="user.href" data-name="user.name" :href="user.href" class="avatar">
+                                        <img :src="user.img" :alt="user.name">
+                                    </a>
+                                    <div class="posts__users-dropdown dropdown dropdown--user dropdown--reverse-y" data-dropdown-list="user-b">
+                                        <div class="dropdown__user">
+                                            <a href="#" class="dropdown__user-label bg-218380">B</a>
+                                            <div class="dropdown__user-nav">
+                                                <a href="#"><i class="icon-Add_User"></i></a>
+                                                <a href="#"><i class="icon-Message"></i></a>
+                                            </div>
+                                            <div class="dropdown__user-info">
+                                                <a href="#">{{user.name}}</a>
+                                                <p>{{user.status.lastActivity}}</p>
+                                            </div>
+                                            <div class="dropdown__user-icons">
+                                                <a href="#"><img th:src="@{/resources/images/Intermediate.svg}" alt="user-icon"></a>
+                                                <a href="#"><img th:src="@{/resources/images/Bot.svg}" alt="user-icon"></a>
+                                                <a href="#"><img th:src="@{/resources/images/Animal_Lover.svg}" alt="user-icon"></a>
+                                            </div>
+                                            <div class="dropdown__user-statistic">
+                                                <div>Threads - <span>{{user.status.thread}}</span></div>
+                                                <div>Posts - <span>{{user.status.post}}</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="posts__replies">{{itm.reply}}</div>
+                            <div class="posts__views">{{itm.view}}</div>
+                            <div class="posts__activity">{{itm.activity}}</div>
+                        </div>
+                    </div>
+                    <div class="posts__item" :class="post.bColor" v-for="post in post">
+                        <div class="posts__section-left">
+                            <div class="posts__topic">
+                                <div class="posts__content">
+                                    <a :href="post.href">
+                                        <h3><i v-if="post.block" class="icon-Locked"></i>{{post.title}}</h3>
+                                    </a>
+                                    <div class="posts__tags tags">
+                                        <a v-for="tag in post.tags" :href="tag.value" :class="tag.color">{{tag.key}}</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="posts__category">
+                                <a v-for="cat in post.categories" :href="cat.value" class="category">
+                                <i :class="cat.color"></i>{{cat.key}}
+                                </a>
+                            </div>
+                        </div>
+                        <div class="posts__section-right">
+                            <div class="posts__users js-dropdown">
+                                <div :user-id="user.id" :class="'user-'+user.id" v-for="user in post.postActivitys">
+                                    <a v-on:click="dropdown('user-'+user.id, $event)" :data-href="user.href" data-name="user.name" :href="user.href" class="avatar"
+                                    :data-dropdown-btn="user.id">
+                                        <img :src="user.img" :alt="user.name">
+                                    </a>
+                                    <div class="posts__users-dropdown dropdown dropdown--user dropdown--reverse-y" :data-dropdown-list="user.id">
+                                        <div class="dropdown__user">
+                                            <a href="#" class="dropdown__user-label bg-218380"><img :src="user.img" :alt="user.name"></a>
+                                            <div class="dropdown__user-nav">
+                                                <a href="#"><i class="icon-Add_User"></i></a>
+                                                <a href="#"><i class="icon-Message"></i></a>
+                                            </div>
+                                            <div class="dropdown__user-info">
+                                                <a href="#">{{user.name}}</a>
+                                                <p>{{user.lastActivity}}</p>
+                                            </div>
+                                            <div class="dropdown__user-icons">
+                                                <a href="#"><img th:src="@{/resources/images/Intermediate.svg}" alt="user-icon"></a>
+                                                <a href="#"><img th:src="@{/resources/images/Bot.svg}" alt="user-icon"></a>
+                                                <a href="#"><img th:src="@{/resources/images/Animal_Lover.svg}" alt="user-icon"></a>
+                                            </div>
+                                            <div class="dropdown__user-statistic">
+                                                <div>Threads - <span>{{user.thread}}</span></div>
+                                                <div>Posts - <span>{{user.posted}}</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="posts__replies">{{post.reply}}</div>
+                            <div class="posts__views">{{post.view}}</div>
+                            <div class="posts__activity">{{post.activity}}</div>
+                        </div>
+                    </div>
+                </div>
+				<div v-if="page.showMore" class="create__box margin-top-20px">
+					<a v-on:click="loadMore('')" href="javascript:void(0)" class="create__btn-create btn btn--type-02 margin-0-auto">Load more</a>
+				</div>			
+            </div>
+        </div>
+</div>
+<div layout:fragment="customjs">
+    <script type="text/javascript" th:src="@{/resources/js/controller/index.js}"></script>
+</div>
+<div layout:fragment="customcss">
+    <!-- nothing -->
+</div>
+</body>
+</html>

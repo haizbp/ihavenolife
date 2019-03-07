@@ -1,0 +1,240 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<title layout:title-pattern="$DECORATOR_TITLE: $CONTENT_TITLE">Page</title>
+<meta th:replace="~{/components/meta}" />
+<link rel="stylesheet" th:replace="@{/components/css}" />
+</head>
+<body>
+	<header id="id-header">
+		<div class="header js-header js-dropdown">
+			<div class="container">
+				<div class="header__logo">
+					<h1>
+						<img th:src="@{/resources/images/Logo_Forum.svg}" alt="logo">
+					</h1>
+					<div v-on:click="dropdown('header__logo', $event)"
+						class="header__logo-btn" data-dropdown-btn="logo">
+						Unity<i class="icon-Arrow_Below"></i>
+					</div>
+					<nav class="dropdown dropdown--design-01" data-dropdown-list="logo">
+						<ul class="dropdown__catalog">
+							<li v-for="menu in logoMenu" :key="menu.key">
+							<img class="img-menu" :src="menu.icon" :alt="menu.key"/>
+							<span class="space"></span>
+							<a
+								:data-value="menu.value" :data-display="menu.key"
+								:href="menu.value">{{menu.key}}</a>
+							</li>
+
+						</ul>
+					</nav>
+				</div>
+				<div class="header__search">
+					<form v-on:submit="doSearch">
+						<label> <i v-on:click="openMobileSearch"
+							class="icon-Search js-header-search-btn-open"></i> <input v-model="search.value"
+							type="search" placeholder="Search all forums" @keyUp="doSearch"
+							class="form-control">
+						</label>
+					</form>
+					<div class="header__search-close js-header-search-btn-close">
+						<i v-on:click="openMobileSearch" class="icon-Cancel"></i>
+					</div>
+					<div v-on:click="dropdown('header__search', $event)"
+						class="header__search-btn" data-dropdown-btn="search">
+						Topics<i class="icon-Arrow_Below"></i>
+					</div>
+					<div class="dropdown dropdown--design-01"
+						data-dropdown-list="search">
+						<ul>
+							<li><label> <label class="custom-checkbox">
+										<input type="checkbox" checked="checked"> <i></i>
+								</label>Search Titles Only
+							</label></li>
+							<li><label> <label class="custom-checkbox">
+										<input type="checkbox"> <i></i>
+								</label>Show Results as Posts
+							</label></li>
+							<li><a href="#"> <i class="icon-Advanced_Search"></i>Advanced
+									Search
+							</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="header__menu">
+					<div v-on:click="dropdown('header__menu', $event)"
+						class="header__menu-btn dropdown__btn--open"
+						data-dropdown-btn="menu">
+						Menu<i class="icon-Menu_Icon"></i>
+					</div>
+					<nav class="dropdown dropdown--design-01" data-dropdown-list="menu">
+						<div>
+							<ul class="dropdown__catalog row">
+								<li v-for="nav in headerNav" :key="nav.key" class="col-xs-6">
+									<a :data-value="nav.value" :data-display="nav.key"
+									:href="nav.value">{{nav.key}}</a>
+								</li>
+							</ul>
+						</div>
+						<div>
+							<h3>Categories</h3>
+							<ul class="dropdown__catalog row">
+								<li v-for="cat in cats" :key="cat.key" class="col-xs-6"><a
+									:data-value="cat.value" :data-display="cat.key"
+									:href="cat.value" href="#" class="category"><i
+										:class="cat.color"></i>{{cat.key}}</a></li>
+							</ul>
+						</div>
+						<div>
+							<ul class="dropdown__catalog row">
+								<li v-for="about in aboutUs" :key="about.key" class="col-xs-6">
+									<a :data-value="about.value" :data-display="about.key"
+									:href="about.value">{{about.key}}</a>
+								</li>
+							</ul>
+						</div>
+					</nav>
+				</div>
+				<div class="header__notification">
+					<div v-on:click="dropdown('header__notification', $event)"
+						class="header__notification-btn" data-dropdown-btn="notification">
+						<i class="icon-Notification"></i> <span>{{notification.count}}</span>
+					</div>
+					<div class="dropdown dropdown--design-01"
+						data-dropdown-list="notification">
+						<div>
+							<a :data-value="notify.value" :data-display="notify.key"
+								:href="notify.href" v-for="notify in notification.list"
+								:key="notify.key"> <i :class="notify.icon"></i>
+								<p v-if="notify.type=='text'">
+									{{notify.value}}<span>{{notify.key}}</span>
+								</p>
+								<p v-if="notify.type=='image'">
+									{{notify.value}}<span><img :src="notify.src"
+										:alt="notify.alt">{{notify.key}}</span>
+								</p>
+							</a> <span><a href="#">view older notifications...</a></span>
+						</div>
+					</div>
+				</div>
+				<div class="header__user">
+					<div v-on:click="dropdown('header__user', $event)"
+						class="header__user-btn dropdown__btn--open"
+						data-dropdown-btn="user">
+						<img th:src="@{/resources/images/A.svg}" alt="avatar">
+						azyrusmax<i class="icon-Arrow_Below"></i>
+					</div>
+					<nav class="dropdown dropdown--design-01" data-dropdown-list="user">
+						<div>
+							<div class="dropdown__icons">
+								<a href="#"><i class="icon-Bookmark"></i></a> <a href="#"><i
+									class="icon-Message"></i></a> <a href="#"><i
+									class="icon-Preferences"></i></a> <a href="#"><i
+									class="icon-Logout"></i></a>
+							</div>
+						</div>
+						<div>
+							<ul class="dropdown__catalog">
+								<li><a href="#">Dashboard</a></li>
+								<li><a href="#">Badges</a></li>
+								<li><a href="#">My Groups</a></li>
+								<li><a href="#">Notifications</a></li>
+								<li><a href="#">Topics</a></li>
+								<li><a href="#">Likes</a></li>
+								<li><a href="#">Solved</a></li>
+							</ul>
+						</div>
+					</nav>
+				</div>
+			</div>
+			
+		</div>
+	</header>
+	<div id="main">
+	<div  id="id-container" layout:fragment="content"></div>
+	</div>
+	<script th:replace="~{/components/js}"></script>
+	<div layout:fragment="customjs"></div>
+	<div layout:fragment="customcss"></div>
+	<footer>
+		<div class="footer js-dropdown">
+			<div class="container">
+				<div class="footer__logo">
+					<div>
+						<img th:src="@{/resources/images/Logo_Forum.svg}" alt="logo">Unity
+					</div>
+				</div>
+				<div class="footer__nav">
+					<div class="footer__tline">
+						<i class="icon-Support"></i>
+						<ul class="footer__menu">
+							<li><a href="#">Support</a></li>
+							<li><a href="#">About</a></li>
+							<li><a href="#">Contact Us</a></li>
+							<li><a href="#">The Team</a></li>
+						</ul>
+						<div class="footer__language">
+							<div class="footer__language-btn" data-dropdown-btn="language">
+								Americas - English<i class="icon-Arrow_Below"></i>
+							</div>
+							<div
+								class="footer__language-dropdown dropdown dropdown--design-01 dropdown--reverse-y"
+								data-dropdown-list="language">
+								<div class="row">
+									<div class="col-xs-6">
+										<h3>Region</h3>
+										<ul class="dropdown__catalog">
+											<li class="active"><a href="#"><i></i>America</a></li>
+											<li><a href="#"><i></i>Europe</a></li>
+											<li><a href="#"><i></i>Asia</a></li>
+											<li><a href="#"><i></i>China</a></li>
+											<li><a href="#"><i></i>Australia</a></li>
+										</ul>
+									</div>
+									<div class="col-xs-6">
+										<h3>Language</h3>
+										<ul class="dropdown__catalog">
+											<li class="active"><a href="#"><i></i>English</a></li>
+											<li><a href="#"><i></i>Espanol</a></li>
+											<li><a href="#"><i></i>Portugues</a></li>
+											<li><a href="#"><i></i>Chinese</a></li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="footer__bline">
+						<ul class="footer__menu">
+							<li class="footer__copyright"><span>© 2017
+									azyrusthemes.com</span></li>
+							<li><a href="#">Teams</a></li>
+							<li><a href="#">Privacy</a></li>
+							<li><a href="#">Send Feedback</a></li>
+						</ul>
+						<ul class="footer__social">
+							<li><a href="#"><i class="fa fa-facebook-square"
+									aria-hidden="true"></i></a></li>
+							<li><a href="#"><i class="fa fa-twitter"
+									aria-hidden="true"></i></a></li>
+							<li><a href="#"><i class="fa fa-google-plus"
+									aria-hidden="true"></i></a></li>
+							<li><a href="#"><i class="fa fa-dribbble"
+									aria-hidden="true"></i></a></li>
+							<li><a href="#"><i class="fa fa-cloud"
+									aria-hidden="true"></i></a></li>
+							<li><a href="#"><i class="fa fa-rss" aria-hidden="true"></i></a></li>
+						</ul>
+						<div class="footer__language-btn-m" data-dropdown-btn="language">
+							Americas - English<i class="icon-Arrow_Below"></i>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</footer>
+</body>
+</html>
