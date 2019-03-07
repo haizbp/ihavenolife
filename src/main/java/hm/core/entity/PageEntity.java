@@ -1,8 +1,12 @@
 package hm.core.entity;
 
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -16,6 +20,13 @@ public class PageEntity extends AbstractEntity {
 	private String path;
 	private String viewPath;
 	private String title;
+	@OneToMany(
+	        cascade = CascadeType.ALL,
+	        orphanRemoval = true,
+	        fetch = FetchType.LAZY,
+	        mappedBy = "page"
+	    )
+	private Set<ActionEntity> actions = new HashSet<>();
 
 	public String getPath() {
 		return path;
@@ -39,6 +50,14 @@ public class PageEntity extends AbstractEntity {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public Set<ActionEntity> getActions() {
+		return actions;
+	}
+
+	public void setActions(Set<ActionEntity> actions) {
+		this.actions = actions;
 	}
 
 }

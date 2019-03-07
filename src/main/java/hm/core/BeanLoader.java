@@ -25,13 +25,18 @@ public class BeanLoader implements ApplicationContextAware {
 	public ApplicationContext getContext() {
 		return applicationContext;
 	}
+	
+	public <T> T createBean(Class<T> clazz) {
+		return beanFactory.createBean(clazz);
+	}
 
 	public <T> void addBean(Class<T> clazz, String name) {
 		BeanDefinitionRegistry registry = (BeanDefinitionRegistry) beanFactory;
 
 		BeanDefinitionBuilder b = BeanDefinitionBuilder.genericBeanDefinition(clazz);
 		registry.registerBeanDefinition(name, b.getBeanDefinition());
-
+		
+		
 	}
 
 }
