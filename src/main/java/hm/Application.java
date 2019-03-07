@@ -7,13 +7,12 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
-@SpringBootApplication
-@EnableAutoConfiguration
-@ComponentScan(basePackages = "${spring.component-scan}")
-public class Application {
+import hm.core.AppExecutor;
+
+public class Application extends AppExecutor {
 
 	public static void main(String[] args) throws MalformedURLException {
-		SpringApplication.run(Application.class, args);
+		run(args);
 	}
 
 }

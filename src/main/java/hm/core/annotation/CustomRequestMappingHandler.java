@@ -64,8 +64,7 @@ public class CustomRequestMappingHandler extends RequestMappingHandlerMapping {
 	}
 	
 	private RequestMappingInfo pageExtension(RequestCondition<?> customCondition) {
-		PathPattern[] patterns = new PathPattern[1];
-		patterns[0] =  getPathPatternParser().parse(".html");
+		PathPattern[] patterns = new PathPattern[0];
 		return new RequestMappingInfo(new PatternsRequestCondition(patterns), new RequestMethodsRequestCondition(),
 				new ParamsRequestCondition(), new HeadersRequestCondition(), new ConsumesRequestCondition(),
 				new ProducesRequestCondition(), customCondition);

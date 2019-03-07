@@ -25,17 +25,14 @@ public class RedirectController extends BaseController {
 	private PageService pageService;
 	
 	@GetMapping
-	public Mono<String> redirect(ServerWebExchange serverWebExchange, Model model, WebSession session) throws Exception {
+	public Mono<String> doGet(ServerWebExchange serverWebExchange, Model model, WebSession session) throws Exception {
 		ServerHttpRequest request = serverWebExchange.getRequest();
 		ServerHttpResponse response = serverWebExchange.getResponse();
 		
-		String absPath = request.getPath().toString();
-		
-		PageInfo pageInfo = pageService.fetchData(absPath);
-		
+		PageInfo pageInfo = pageService.fetchData(getRequestPath(request));
 		model.addAttribute("pageInfo", pageInfo);
 		
-		return Mono.just(pageInfo.getViewPath());
+		return returnView(pageInfo.getViewPath());
 	}
 
 }
