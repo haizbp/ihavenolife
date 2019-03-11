@@ -9,10 +9,13 @@ import org.springframework.context.annotation.ComponentScan;
 
 import hm.core.AppExecutor;
 
+@SpringBootApplication(scanBasePackages = "hm")
+@EnableAutoConfiguration
+@ComponentScan(basePackages = "${spring.component-scan}")
 public class Application extends AppExecutor {
 
 	public static void main(String[] args) throws MalformedURLException {
-		run(args);
+		SpringApplication.run(Application.class, args);
 	}
 
 }

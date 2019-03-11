@@ -4,8 +4,8 @@ public class EchoAction extends Action{
 
 	@Override
 	public void doAction() {
-		String echo = String.valueOf(getItem("text"));
-		addItem("return", "Echo: "+echo);
+		String echo = (String) getParam("text", getServerWebExchange().getRequest()).get(0);
+		addViewAttribute("message", "Echo: "+echo);
 	}
 
 }

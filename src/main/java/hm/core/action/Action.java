@@ -8,7 +8,9 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.ui.Model;
 import org.springframework.web.server.ServerWebExchange;
 
-public abstract class Action {
+import hm.core.BaseAction;
+
+public abstract class Action extends BaseAction{
 
 	private int code = 200;
 
@@ -40,6 +42,10 @@ public abstract class Action {
 
 	public void addItem(String key, Object o) {
 		bag.put(key, o);
+	}
+	
+	public void addViewAttribute(String key, Object o) {
+		model.addAttribute(key, o);
 	}
 
 	public Map<String, Object> getBag() {

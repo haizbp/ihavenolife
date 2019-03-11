@@ -7,9 +7,9 @@ import org.springframework.context.annotation.ComponentScan;
 
 import hm.Application;
 
-@SpringBootApplication
-@EnableAutoConfiguration
-@ComponentScan(basePackages = "${spring.component-scan}")
+@SpringBootApplication(scanBasePackages = "hm")
+//@EnableAutoConfiguration
+//@ComponentScan(basePackages = "${spring.component-scan}")
 public class AppExecutor {
 
 	public static void run(String[] args) {
